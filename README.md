@@ -4,7 +4,7 @@
 [![Python Version](https://img.shields.io/badge/Python-3.12%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> A Pip-Boy inspired application built with Python and Pygame
+> A Pip-Boy inspired application built with Python and Pygame-ce
 
 ---
 
@@ -23,7 +23,7 @@
 
 ## Introduction
 
-The **PipBoy Pygame Project** is an interactive application inspired by the iconic Pip-Boy interface from the *Fallout* series. Built using [Pygame](https://www.pygame.org/news), this project simulates various aspects of the Pip-Boy interface, including interactive menus, inventory displays, and dynamic UI elements. It is designed both as a fun project and as a learning tool for Python game development.
+The **PipBoy Pygame Project** is an interactive application inspired by the iconic Pip-Boy interface from the *Fallout* series. Built using [Pygame-ce](https://github.com/pygame-community/pygame-ce), this project simulates various aspects of the Pip-Boy interface, including interactive menus, inventory displays, and dynamic UI elements. It is designed both as a fun project and as a learning tool for Python game development.
 
 I have used the great pipboy project from [Zapwizard](https://github.com/zapwizard/pypboy), but this entire project is built from the ground up.
 
@@ -42,7 +42,7 @@ I have used the great pipboy project from [Zapwizard](https://github.com/zapwiza
 ### Prerequisites
 
 - **Python 3.12 or later:** [Download Python](https://www.python.org/downloads/)
-- **Pygame:** This project uses Pygame for its graphical interface.
+- **Pygame:** This project uses Pygame-ce for its graphical interface.
 - **Optional: Pip** to install dependencies from `requirements.txt`.
 
 ### Steps
