@@ -1,10 +1,11 @@
+import os
 from threading import Thread, Lock
 import pygame
 import settings
-from ui import GenericList, AnimatedImage
+from ui import GenericList, AnimatedImage, WireframeItem
 from items import Inventory
 from util_functs import Utils
-            
+
             
 class InvBase:
     def __init__(self, screen, tab_instance, draw_space: pygame.Rect, category: str, enable_turntable: bool = True, enable_dot: bool = False):
@@ -140,20 +141,25 @@ class InvBase:
         selected_item = self.unique_items[self.inv_list.selected_index]   
         if not selected_item.icons: 
             return  
-        folder = f"{settings.ITEMS_BASE_FOLDER}/{selected_item.icons}"
-        icons = Utils.load_images(folder) 
-        if not icons:
-            return
+        # icons = Utils.load_images(folder) 
+        # if not icons:
+        #     return
         
-        icons = [Utils.scale_image_abs(image, height=self.turntable_draw_space.height) for image in icons]
+        # icons = [Utils.scale_image_abs(image, height=self.turntable_draw_space.height) for image in icons]
+        # try to get obj that matches icons name, otherwise use first obj in folder
+        model_path = f"{settings.ITEMS_BASE_FOLDER}/{selected_item.icons}/{selected_item.icons}.obj"
+        if not Utils.file_exists(model_path):
+            model_path = f"{settings.ITEMS_BASE_FOLDER}/{selected_item.icons}/{os.listdir(f'{settings.ITEMS_BASE_FOLDER}/{selected_item.icons}')[0]}"
      
-        self.item_turntable = AnimatedImage(
+        self.item_turntable = WireframeItem(
             self.screen,
-            icons,
+            (self.turntable_draw_space.x, self.turntable_draw_space.y),
             self.turntable_draw_space,
-            settings.SPEED * 100
+            model_path,
+            frame_duration=settings.SPEED * 100,
+            loop=True
         )
-        
+
         self.item_turntable.start()
 
 

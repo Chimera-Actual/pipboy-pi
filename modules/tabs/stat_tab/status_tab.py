@@ -93,7 +93,6 @@ class StatusTab:
             state = 16  # All limbs (including head) are damaged
 
         # Return the legs image path based on the computed state.
-        # For example, if images are named "legs_1.svg", "legs_2.svg", etc.
         return state
 
  
@@ -103,7 +102,6 @@ class StatusTab:
         
         paths = settings.STAT_TAB_HEADS
         crippled_limbs = len([True for x in settings.DEFAULT_LIMB_DAMAGE if x < settings.CRIPPLED_THRESHOLD])
-        print(crippled_limbs)
         
         if head_hp >= settings.CRIPPLED_THRESHOLD:
             if settings.RADIATION_CURRENT > settings.DAMAGED_THRESHOLD:
@@ -136,7 +134,6 @@ class StatusTab:
                     
                     positions.append((x, y))
                 # return [tuple(map(float, pos.split(","))) for pos in f.read().split(";")]
-                print(positions)
                 return positions
                 
         except FileNotFoundError:

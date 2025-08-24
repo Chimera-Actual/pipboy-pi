@@ -50,7 +50,7 @@ DAMAGE_TYPES_ICONS = {
     "acid_dmg": "../images/svgs/damage_types/acid.svg",
 }
 
-ITEMS_BASE_FOLDER = "../images/inventory/items"
+ITEMS_BASE_FOLDER = "../objs/models_out"
 
 COMMONWEALTH_MAP = "../images/worldmap/CompanionWorldMap.png"
 COMMONWEALTH_MAP_MARKERS = "../images/worldmap/WorldMapMarkers.png"

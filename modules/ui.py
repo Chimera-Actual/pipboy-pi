@@ -3,6 +3,8 @@ from threading import Thread, Event, Lock
 import pygame
 import settings
 from util_functs import Utils
+from cpp import wireframe
+
 
 ###############################################
 # Generic UI elements for the Pip-OS project #
@@ -404,3 +406,74 @@ class AnimatedImage:
         self.current_frame_index = 0
         self.done = False
         self.start()
+
+
+
+class WireframeItem:
+    def __init__(self, screen, position, draw_space, model_path,
+                 frame_duration: int = 100, loop: bool = True):
+        self.screen = screen
+        self.position = position
+        self.rect = draw_space
+        self.loop = loop
+
+        # Wrap the C++ renderer
+        self.renderer = wireframe.WireframeRenderer(draw_space.width, draw_space.height, 1000.0)
+        wireframe.WireframeRenderer.set_camera(self.renderer, 0.0, 0.0, 10.0)
+        wireframe.WireframeRenderer.set_rotation(self.renderer, 0.0, 0.0, 0.0)
+        self.renderer.load_model(model_path)
+
+        # Thread state
+        self.frame_duration = frame_duration / 1000.0  # seconds
+        self.done = False
+        self.stop_event = Event()
+        self.lock = Lock()
+        self.thread = None
+
+        # Last rendered lines (safe to reuse between frames)
+        self.lines = []
+
+    def _update_loop(self):
+        """Thread function for updating rotation frames."""
+        while not self.stop_event.is_set() and not self.done:
+            with self.lock:
+                # Get next rotation frame from C++ backend
+                self.lines = self.renderer.render()
+                if not self.lines and not self.loop:
+                    self.done = True
+                    break
+            # Wait with the ability to break early
+            self.stop_event.wait(timeout=self.frame_duration)
+
+    def start(self):
+        """Start the rotation loop thread."""
+        if self.thread is None or not self.thread.is_alive():
+            self.done = False
+            self.stop_event.clear()
+            self.renderer.start()
+            self.thread = Thread(target=self._update_loop, daemon=True)
+            self.thread.start()
+
+    def stop(self):
+        """Stop the rotation instantly."""
+        self.stop_event.set()
+        self.renderer.stop()
+        self.thread = None
+
+    def reset(self):
+        """Reset and restart the rotation."""
+        self.stop()
+        self.done = False
+        self.lines = []
+        self.start()
+
+    def render(self):
+        """Blit the current frame to the screen (thread-safe)."""
+        with self.lock:
+            for line in self.lines:
+                pygame.draw.aaline(
+                    self.screen,
+                    settings.PIP_BOY_LIGHT,
+                    (line.x1 + self.position[0], line.y1 + self.position[1]),
+                    (line.x2 + self.position[0], line.y2 + self.position[1])
+                )

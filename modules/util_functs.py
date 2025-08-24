@@ -261,3 +261,8 @@ class Utils:
         now = datetime.datetime.now()    
         current_time = now.strftime("%I:%M%p")
         return current_time
+    
+    @staticmethod
+    def file_exists(path: str) -> bool:
+        """Check if a file exists at the given path."""
+        return os.path.isfile(path)
