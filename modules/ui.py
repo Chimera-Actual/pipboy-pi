@@ -418,13 +418,12 @@ class WireframeItem:
         self.loop = loop
 
         # Wrap the C++ renderer
-        self.renderer = wireframe.WireframeRenderer(draw_space.width, draw_space.height, 1000.0)
-        wireframe.WireframeRenderer.set_camera(self.renderer, 0.0, 0.0, 10.0)
-        wireframe.WireframeRenderer.set_rotation(self.renderer, 0.0, 0.0, 0.0)
+        self.renderer = wireframe.WireframeRenderer(draw_space.width, draw_space.height, 125.0)
         self.renderer.load_model(model_path)
-
+        self.renderer.set_camera(5.0, -2.0, -30.0)
+        self.renderer.set_rotation(0.0, 0.0, 0.0)
         # Thread state
-        self.frame_duration = frame_duration / 1000.0  # seconds
+        self.frame_duration = frame_duration / 500.0  # seconds
         self.done = False
         self.stop_event = Event()
         self.lock = Lock()
@@ -471,6 +470,9 @@ class WireframeItem:
         """Blit the current frame to the screen (thread-safe)."""
         with self.lock:
             for line in self.lines:
+                
+                # print the line 
+                
                 pygame.draw.aaline(
                     self.screen,
                     settings.PIP_BOY_LIGHT,

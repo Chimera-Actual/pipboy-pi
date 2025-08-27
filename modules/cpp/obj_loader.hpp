@@ -3,6 +3,7 @@
 #include <array>
 #include <string>
 #include <vector>
+#include <math.h>
 
 class Obj
 {

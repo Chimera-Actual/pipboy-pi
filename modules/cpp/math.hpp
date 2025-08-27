@@ -31,11 +31,6 @@ struct Line2D
   int x1, y1, x2, y2;
 };
 
-// struct Edge {
-//   Vertex v1, v2;
-//   Vertex *begin() { return &v1; }
-//   Vertex *end() { return &v1 + 2; }
-// };
 struct Face
 {
   unsigned int v1, v2, v3;
@@ -45,11 +40,12 @@ struct Face
 
 // just declarations
 float deg_to_rad(const float &deg);
-void set_v(const Point3D &dim, std::vector<Point3D> &v);
-void mv_v(const Point3D &pos, std::vector<Point3D> &v);
-void rot_v(const Point3D &rot, std::vector<Point3D> &v);
+void set_v(const Point3D &dim, Point3D &v);
+void mv_v(const Point3D &pos, Point3D &v);
+void rot_v(const Point3D &rot, Point3D &v);
 Point3D sub_v(const Point3D &v1, const Point3D &v2);
 Point3D cross_v(const Point3D &v1, const Point3D &v2);
 Point3D norm(const Point3D &n);
-
 Point3D div_v(const Point3D &v, const float &fact);
+bool lines_equal(const Line2D &l1, const Line2D &l2, int eps2);
+inline int dist2(int x1, int y1, int x2, int y2);

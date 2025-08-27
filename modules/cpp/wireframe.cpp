@@ -5,6 +5,7 @@
 #include <cmath>
 #include <algorithm>
 #include <utility>
+#include <iostream>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
@@ -14,13 +15,15 @@ class WireframeRenderer
 {
 public:
   WireframeRenderer(int width, int height, float focal = 50.0f)
-      : width(width), height(height), focal_l(focal), rot_y(0.0f), running(false)
+      : width(width), height(height), focal_l(focal), rot_z(0.0f), running(false)
   {
-    camera = {0, 0, 10};
+    camera = {0, 0, -10};
   }
+
   void load_model(const std::string &path)
   {
     obj = Obj(path);
+    scale_obj_to_screen();
     original_v = obj.v;
   }
   void set_camera(float x, float y, float z)
@@ -47,31 +50,53 @@ public:
     Obj obj_new = obj;
     obj_new.v = original_v;
 
-    rot_y += deg_to_rad(5.0f); // 1 degree per frame
-    if (rot_y > 2 * M_PI)
-      rot_y -= 2 * M_PI;
+    rot_z += deg_to_rad(5.0f); // 1 degree per frame
+    if (rot_z > M_PI * 2.0f)
+      rot_z = 0.0f;
 
-    Point3D rot_rad = {rot.x, rot.y + rot_y, rot.z};
-    rot_v(rot_rad, obj_new.v);
-    mv_v(camera, obj_new.v);
+    Point3D rot_rad = {rot.x, rot.y + rot_z, rot.z};
+    for (Point3D &v : obj_new.v)
+    {
+      rot_v(rot_rad, v);
+    }
 
-    float factor = (width < height) ? (float)width / 100.0f : (float)height / 100.0f;
+    std::vector<Point3D> camera_space_v;
+    for (const Point3D &v : obj_new.v)
+    {
+      camera_space_v.push_back(sub_v(v, camera));
+    }
 
     std::vector<Point2DInt> new_v;
-    new_v.resize(obj_new.v.size());
-    for (size_t i = 0; i < obj_new.v.size(); i++)
+    new_v.resize(camera_space_v.size());
+    for (size_t i = 0; i < camera_space_v.size(); i++)
     {
-      new_v[i] = conv_screen_space(obj_new.v[i], height, width, factor, focal_l);
+      // std::cerr << "parsed vertex: " << camera_space_v[i].x << ", " << camera_space_v[i].y << ", " << camera_space_v[i].z << "\n";
+      new_v[i] = conv_screen_space(camera_space_v[i], height, width, size_factor, focal_l);
     }
 
     for (const Face &f : obj_new.f)
     {
-      if (std::max({f.v1, f.v2, f.v3}) >= (int)new_v.size())
+      // handle both 0-based and 1-based face indices
+      auto convert_idx = [&](int idx) -> int
+      {
+        if (idx < 0)
+          return -1;
+        if ((size_t)idx < new_v.size())
+          return idx; // 0-based OK
+        if ((size_t)(idx - 1) < new_v.size())
+          return idx - 1; // 1-based -> convert
+        return -1;
+      };
+
+      int a = convert_idx(f.v1);
+      int b = convert_idx(f.v2);
+      int c = convert_idx(f.v3);
+      if ((a < 0 || b < 0 || c < 0))
         continue;
 
-      add_line(lines, new_v[f.v1], new_v[f.v2]);
-      add_line(lines, new_v[f.v2], new_v[f.v3]);
-      add_line(lines, new_v[f.v3], new_v[f.v1]);
+      add_line(lines, new_v[a], new_v[b]);
+      add_line(lines, new_v[b], new_v[c]);
+      add_line(lines, new_v[c], new_v[a]);
     }
     return lines;
   }
@@ -81,27 +106,65 @@ private:
   float focal_l;
   Point3D camera;
   Point3D rot = {0, 0, 0};
-  float rot_y;
+  float rot_z;
   bool running;
+  const float size_factor = (width <= height) ? (float)width / 100.0f : (float)height / 100.0f;
 
   Obj obj;
   std::vector<Point3D> original_v;
 
-  static Point2DInt conv_screen_space(const Point3D &vertex, int rows, int cols, float factor, float focal_l)
+  static Point2DInt conv_screen_space(const Point3D &vertex, const int &heights, const int &widths, const float &factor, const float &focal_l)
   {
-    const float EPS_Z = 0.0001f;
+    const float EPS_Z = 1e-4f;
     if (vertex.z <= EPS_Z)
       return {-1, -1};
-    int sx = static_cast<int>(round(((vertex.x * focal_l / vertex.z) * factor) + (cols * 0.5f)));
-    int sy = static_cast<int>(round(((vertex.y * focal_l / vertex.z) * factor) + (rows * 0.5f)));
+    int sx = static_cast<int>(round(((vertex.x * focal_l / vertex.z) * factor) + (widths * 0.5f)));
+    int sy = static_cast<int>(round(((vertex.y * focal_l / vertex.z) * factor) + (heights * 0.5f)));
+    // std::cerr << "[conv] sx, sy: " << sx << "," << sy << "\n";
     return {sx, sy};
   }
 
-  static void add_line(std::vector<Line2D> &out, const Point2DInt &a, const Point2DInt &b)
+  static void add_line(std::vector<Line2D> &out, const Point2DInt &a, const Point2DInt &b, int eps = 1)
   {
-    if (a.x < 0 || b.x < 0 || a.y < 0 || b.y < 0)
-      return;
-    out.push_back({a.x, a.y, b.x, b.y});
+    Line2D new_line = {a.x, a.y, b.x, b.y};
+    float eps2 = eps * eps;
+    for (auto &l : out)
+    {
+      if (lines_equal(l, new_line, eps2))
+        return; // skip duplicate
+    }
+    if (a.x > b.x || (a.x == b.x && a.y > b.y))
+      std::swap(new_line.x1, new_line.x2), std::swap(new_line.y1, new_line.y2);
+
+    out.push_back(new_line);
+  }
+
+  void scale_obj_to_screen()
+  {
+    // find the max dimension
+    Point3D min = {INFINITY, INFINITY, INFINITY};
+    Point3D max = {-INFINITY, -INFINITY, -INFINITY};
+    for (const Point3D &v : obj.v)
+    {
+      min.x = std::min(min.x, v.x);
+      min.y = std::min(min.y, v.y);
+      min.z = std::min(min.z, v.z);
+
+      max.x = std::max(max.x, v.x);
+      max.y = std::max(max.y, v.y);
+      max.z = std::max(max.z, v.z);
+    }
+    Point3D dim = sub_v(max, min);
+    float max_dim = std::max({dim.x, dim.y, dim.z});
+    if (max_dim < 1e-6f)
+      return;                             // avoid div by zero
+    float scale_factor = 20.0f / max_dim; // scale to fit in a 20x20x20 box
+    for (Point3D &v : obj.v)
+    {
+      v.x *= scale_factor;
+      v.y *= scale_factor;
+      v.z *= scale_factor;
+    }
   }
 };
 
