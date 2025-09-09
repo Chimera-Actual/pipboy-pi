@@ -149,7 +149,10 @@ class InvBase:
         # try to get obj that matches icons name, otherwise use first obj in folder
         model_path = f"{settings.ITEMS_BASE_FOLDER}/{selected_item.icons}/{selected_item.icons}.obj"
         if not Utils.file_exists(model_path):
-            model_path = f"{settings.ITEMS_BASE_FOLDER}/{selected_item.icons}/{os.listdir(f'{settings.ITEMS_BASE_FOLDER}/{selected_item.icons}')[0]}"
+            try:
+                model_path = f"{settings.ITEMS_BASE_FOLDER}/{selected_item.icons}/{os.listdir(f'{settings.ITEMS_BASE_FOLDER}/{selected_item.icons}')[0]}"
+            except (FileNotFoundError, IndexError):
+                return
      
         self.item_turntable = WireframeItem(
             self.screen,

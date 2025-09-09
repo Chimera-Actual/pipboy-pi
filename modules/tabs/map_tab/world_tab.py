@@ -206,6 +206,7 @@ class RealMap(BaseMap):
 
         # Fetch new data
         query = settings.get_places_map_url(radius, self.lat, self.lon)
+
         
         try:
             response = requests.post(settings.OVERPASS_URL, data={'data': query}, timeout=25)
