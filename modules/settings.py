@@ -29,7 +29,7 @@ SUBTABS = {
 # General Settings
 # ------------------
 
-RASPI = True if platform.system() == 'Linux' else False
+RASPI = False 
 SPEED = 1
 GAME_ACCURATE_MODE = False
 YEARS_ADDED = 263

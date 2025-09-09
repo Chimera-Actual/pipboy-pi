@@ -51,7 +51,7 @@ class SpecialTab:
                 settings.SPEED * 200,
                 self.frame_orders[special],
                 loop=True,
-                sound_path=f"{settings.SPECIAL_SOUNDS}/{special}.ogg" if not settings.GAME_ACCURATE_MODE else None
+                sound_path=f"{settings.SPECIAL_SOUNDS}/{special.lower()}.ogg" if not settings.GAME_ACCURATE_MODE else None
             )
             # self.animated_images[special].start()
         

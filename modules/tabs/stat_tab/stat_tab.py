@@ -81,7 +81,6 @@ class StatTab:
         self.sub_tab_thread_handler.update_tab_index(self.current_sub_tab_index)
     
 
-        
 
     def render(self):
         self.tab_instance.render_footer(self)

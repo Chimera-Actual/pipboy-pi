@@ -61,6 +61,7 @@ class ItemLoader:
         self.config = ConfigParser()
         self.config.read(ini_file)
         self.items = {}
+
         
     def _parse_icon_configs(self, value: str) -> Tuple[IconConfig]:
         if not value:

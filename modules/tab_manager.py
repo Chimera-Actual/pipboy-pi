@@ -206,15 +206,42 @@ class TabManager:
     def switch_tab(self, direction: bool):
         with self.switch_lock:
             # Switch tab index
+            prev_tab_index = self.current_tab_index
             self.previous_tab_index = self.current_tab_index
             self.current_tab_index = max(0, min((self.current_tab_index + (1 if direction else -1)) % len(self.tabs), len(self.tabs) - 1))
-        
+
+        # --- Explicitly stop subtab threads for previous main tab ---
+        if prev_tab_index == 0:  # STAT
+            prev_subtab = self.stat_tab.status_tab if self.stat_tab.current_sub_tab_index == 0 else self.stat_tab.special_tab
+            prev_subtab.handle_threads(False)
+        elif prev_tab_index == 1:
+            self.inv_tab.handle_threads(False)
+        elif prev_tab_index == 2:
+            self.data_tab.handle_threads(False)
+        elif prev_tab_index == 3:
+            self.map_tab.handle_threads(False)
+        elif prev_tab_index == 4:
+            self.radio_tab.handle_threads(False)
+
+        # --- Explicitly start subtab threads for new main tab ---
+        if self.current_tab_index == 0:  # STAT
+            new_subtab = self.stat_tab.status_tab if self.stat_tab.current_sub_tab_index == 0 else self.stat_tab.special_tab
+            new_subtab.handle_threads(True)
+        elif self.current_tab_index == 1:
+            self.inv_tab.handle_threads(True)
+        elif self.current_tab_index == 2:
+            self.data_tab.handle_threads(True)
+        elif self.current_tab_index == 3:
+            self.map_tab.handle_threads(True)
+        elif self.current_tab_index == 4:
+            self.radio_tab.handle_threads(True)
+
         if random.randrange(100) < settings.GLITCH_MOVE_CHANCE and (self.glitch_thread == None or not self.glitch_thread.is_alive()):
             self.glitch_thread = Thread(target=self.tab_switch_glitch, args=())            
             self.glitch_thread.start()
         else:
             self.render_blur = True
-        
+
         self.tab_thread_handler.update_tab_index(self.current_tab_index)
         self.switch_tab_sound()
 

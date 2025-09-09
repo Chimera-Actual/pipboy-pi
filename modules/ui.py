@@ -392,6 +392,8 @@ class AnimatedImage:
 
     def stop(self):
         """Stop the animation instantly."""
+        ch = pygame.mixer.Channel(5)
+        ch.stop()  # Stops any sound currently on this channel
         self.stop_event.set()  # Signal thread to exit
         self.thread = None  # Allow restarting without blocking
 
