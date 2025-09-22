@@ -28,3 +28,7 @@ args = "python modules/main.py"
 
 [workflows.workflow.metadata]
 outputType = "console"
+
+[deployment]
+deploymentTarget = "vm"
+run = ["python", "modules/main.py"]
