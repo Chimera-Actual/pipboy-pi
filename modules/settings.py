@@ -37,10 +37,10 @@ YEARS_ADDED = 263
 # ------------------
 # Screen Settings
 # ------------------
-SCREEN_WIDTH = 320
-SCREEN_HEIGHT = 255
+SCREEN_WIDTH = 1024
+SCREEN_HEIGHT = 768
 FPS = 24
-FULLSCREEN = True if RASPI else False 
+FULLSCREEN = False  # Always windowed in Replit environment 
 BACKGROUND = (0, 0, 0)
 PIP_BOY_LIGHT = (0, 255, 0)
 PIP_BOY_MIDDLE = (0, 190, 0)
