@@ -3,7 +3,7 @@ from threading import Thread, Event, Lock
 import pygame
 import settings
 from util_functs import Utils
-from cpp import wireframe
+# from cpp import wireframe  # Temporarily disabled due to build issues
 
 
 ###############################################

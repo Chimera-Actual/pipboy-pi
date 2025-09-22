@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(init.bat)",
+      "Bash(cmd:*)",
+      "Bash(where cmake)",
+      "Bash(timeout:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
