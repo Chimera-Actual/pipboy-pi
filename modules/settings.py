@@ -7,7 +7,7 @@ import platform
 #######################################################
 # Load items from the items.ini file
 #######################################################
-loader = ItemLoader('items.ini')
+loader = ItemLoader('modules/items.ini')
 items = loader.load_items()
 
 # ==================================================

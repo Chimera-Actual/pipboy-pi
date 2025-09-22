@@ -153,8 +153,12 @@ class RadioTab:
                     self.current_song = None
                     pygame.mixer.music.stop()
             else:
-                if pygame.mixer.music.get_busy():
-                    pygame.mixer.music.stop()
+                try:
+                    if pygame.mixer.music.get_busy():
+                        pygame.mixer.music.stop()
+                except pygame.error:
+                    # Mixer not initialized, skip audio operations
+                    pass
                 self.current_song = None
 
             wait_time = 300 if self.active_station_index is not None else 1000
