@@ -66,6 +66,12 @@ class PipBoySettings {
         document.documentElement.style.setProperty('--pip-color-rgb', theme.rgb);
         document.documentElement.style.setProperty('--pip-bg-color', theme.bg);
         
+        // Update PWA theme color meta tag
+        const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        if (themeColorMeta) {
+            themeColorMeta.content = theme.color;
+        }
+        
         // Apply CRT effects
         const crt = this.settings.crt;
         document.documentElement.style.setProperty('--scanline-intensity', this.crtLevels.scanlines[crt.scanlines]);
