@@ -14,11 +14,12 @@ class PipBoyFramework {
         this.tabs = {
             stat: ['STATUS', 'SPECIAL', 'PERKS'],
             inv: ['WEAPONS', 'APPAREL', 'AID', 'MISC', 'JUNK'],
-            data: ['QUESTS', 'WORKSHOPS', 'STATS'],
+            data: ['QUESTS', 'WORKSHOPS', 'STATS', 'SETTINGS'],
             map: ['LOCAL MAP', 'WORLD MAP'],
             radio: ['DIAMOND CITY', 'CLASSICAL', 'FREEDOM']
         };
         
+        this.settingsManager = null;
         this.init();
     }
     
@@ -28,6 +29,10 @@ class PipBoyFramework {
         this.registerServiceWorker();
         this.createContentPanels();
         this.initializeKeyboardNavigation();
+        // Initialize settings manager after DOM is ready
+        if (typeof PipBoySettings !== 'undefined') {
+            this.settingsManager = new PipBoySettings();
+        }
     }
     
     setupTabListeners() {
