@@ -282,9 +282,9 @@ body {
 /* Consistent button styling for all grid layouts */
 .sub-tabs[data-parent="data"] .sub-tab-button,
 .sub-tabs[data-parent="inv"] .sub-tab-button {
-    font-size: 8px !important;
-    padding: 2px 1px !important;
-    letter-spacing: -0.5px !important;
+    font-size: 11px !important;
+    padding: 4px 2px !important;
+    letter-spacing: 0px !important;
     min-width: auto !important;
     width: 100%;
     text-align: center;
@@ -293,8 +293,8 @@ body {
 .sub-tabs[data-parent="map"] .sub-tab-button,
 .sub-tabs[data-parent="stat"] .sub-tab-button,
 .sub-tabs[data-parent="radio"] .sub-tab-button {
-    font-size: 9px !important;
-    padding: 3px 2px !important;
+    font-size: 12px !important;
+    padding: 4px 3px !important;
     letter-spacing: 0px !important;
     min-width: auto !important;
     width: 100%;
@@ -308,17 +308,17 @@ body {
 .sub-tab-button {
     background: none;
     border: none;
-    color: rgba(var(--pip-color-rgb), 0.5);
+    color: rgba(var(--pip-color-rgb), 0.7);
     font-family: 'Courier New', monospace;
-    font-size: 10px; /* Reduced from 11px */
-    padding: 3px 5px; /* Reduced padding */
+    font-size: 12px;
+    padding: 4px 6px;
     cursor: pointer;
     text-transform: uppercase;
-    letter-spacing: 0.3px; /* Reduced letter spacing */
+    letter-spacing: 0.5px;
     transition: all 0.2s;
     white-space: nowrap;
-    flex-shrink: 0; /* Prevent buttons from shrinking */
-    min-width: min-content; /* Ensure minimum width for content */
+    flex-shrink: 0;
+    min-width: min-content;
 }
 
 .sub-tab-button:hover {
@@ -716,16 +716,19 @@ body {
     outline: 1px solid rgba(var(--pip-color-rgb), 0.3);
 }
 
-/* Apply color theme to all UI elements */
+/* Apply color theme to text elements (no backgrounds on buttons) */
 .tab-button,
 .sub-tab-button,
 .demo-content h2,
 .hp-indicator .value,
 .level-indicator .value,
-.ap-indicator .value,
+.ap-indicator .value {
+    color: var(--pip-color);
+}
+
+/* Apply background color only to decorative elements */
 .tab-underline,
 .tab-button.active::after {
-    color: var(--pip-color);
     background-color: var(--pip-color);
 }
 
@@ -742,20 +745,21 @@ body {
     color: rgba(var(--pip-color-rgb), 0.5);
 }
 
-/* Media queries for smaller viewports */
+/* Media queries for smaller viewports - maintaining readability */
 @media screen and (max-width: 768px) {
     .sub-tabs[data-parent="data"] .sub-tab-button,
     .sub-tabs[data-parent="inv"] .sub-tab-button {
-        font-size: 7px !important;
-        padding: 1px 1px !important;
+        font-size: 10px !important;
+        padding: 3px 2px !important;
+        letter-spacing: -0.2px !important;
     }
 }
 
 @media screen and (max-width: 480px) {
     .sub-tabs[data-parent="data"] .sub-tab-button,
     .sub-tabs[data-parent="inv"] .sub-tab-button {
-        font-size: 6px !important;
-        padding: 1px 1px !important;
-        letter-spacing: -1px !important;
+        font-size: 9px !important;
+        padding: 2px 1px !important;
+        letter-spacing: -0.3px !important;
     }
 }
