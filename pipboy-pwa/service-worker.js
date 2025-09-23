@@ -1,12 +1,12 @@
 // Pip-Boy Framework Service Worker
 const CACHE_NAME = 'pipboy-pwa-v1';
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/styles.css',
-    '/app.js',
-    '/effects.js',
-    '/manifest.json'
+    './',
+    './index.html',
+    './styles.css',
+    './app.js',
+    './effects.js',
+    './manifest.json'
 ];
 
 // Install event - cache files
