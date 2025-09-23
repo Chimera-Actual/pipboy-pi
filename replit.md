@@ -11,6 +11,10 @@ A browser-based Progressive Web App implementation of the Pip-Boy interface from
 - ✅ **Tab System**: Ported tab/sub-tab navigation to JavaScript
 - ✅ **Visual Effects**: Recreated CRT effects, scanlines, and glitches in CSS/JS
 - ✅ **Framework API**: Clean, content-agnostic interface exposed via window.PipBoyAPI
+- ✅ **Enhanced CRT Effects**: More pronounced with adjustable intensity controls
+- ✅ **Settings Tab**: Added under DATA tab with retro-style controls
+- ✅ **Color Themes**: Blue, amber, red, white themes in addition to classic green
+- ✅ **Persistent Settings**: All visual preferences saved in localStorage
 
 ## Project Architecture
 
