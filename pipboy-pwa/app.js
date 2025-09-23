@@ -15,7 +15,7 @@ class PipBoyFramework {
             stat: ['STATUS', 'SPECIAL', 'PERKS'],
             inv: ['WEAPONS', 'APPAREL', 'AID', 'MISC', 'JUNK'],
             data: ['QUESTS', 'WORKSHOPS', 'STATS', 'SETTINGS'],
-            map: ['LOCAL MAP', 'WORLD MAP'],
+            map: ['LOCAL MAP', 'WORLD MAP', 'PLACES'],
             radio: ['DIAMOND CITY', 'CLASSICAL', 'FREEDOM']
         };
         
@@ -184,6 +184,7 @@ class PipBoyFramework {
             'SETTINGS': '<p>Display Settings: Active</p><p>Audio Settings: Enabled</p><p>Theme: Green</p><p>Effects: All On</p>',
             'LOCAL MAP': '<p>[Map Grid Display]</p><p>Current Location: Commonwealth</p>',
             'WORLD MAP': '<p>[World Overview]</p><p>Fast Travel Points: 45</p>',
+            'PLACES': '<p>Diamond City - Population: 47</p><p>Goodneighbor - Population: 23</p><p>Sanctuary Hills - Population: 15</p><p>The Institute - Location: Unknown</p>',
             'DIAMOND CITY': '<p>♪ Playing: Diamond City Radio</p><p>Travis Miles - "The Nervous DJ"</p>',
             'CLASSICAL': '<p>♪ Playing: Classical Radio</p><p>Current Track: Beethoven Symphony No. 5</p>',
             'FREEDOM': '<p>♪ Playing: Radio Freedom</p><p>Minutemen Emergency Broadcast</p>'
