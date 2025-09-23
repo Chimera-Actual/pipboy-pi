@@ -16,19 +16,24 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Pip-Boy Framework"
+args = "Pip-Boy PWA"
 
 [[workflows.workflow]]
-name = "Pip-Boy Framework"
+name = "Pip-Boy PWA"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python run_framework_demo.py"
+args = "cd pipboy-pwa && python3 server.py"
+waitForPort = 5000
 
 [workflows.workflow.metadata]
-outputType = "console"
+outputType = "webview"
 
 [deployment]
 deploymentTarget = "vm"
 run = ["python", "modules/main.py"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80

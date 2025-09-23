@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#00ff00">
+    <title>Pip-Boy Framework</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div id="pipboy-container" class="pipboy-container">
+        <!-- CRT Effects Overlays -->
+        <div class="crt-overlay"></div>
+        <div class="scanlines"></div>
+        <div class="screen-glitch" id="screen-glitch"></div>
+        
+        <!-- Main Content -->
+        <div class="pipboy-screen">
+            <!-- Header with Tabs -->
+            <header class="pipboy-header">
+                <nav class="main-tabs" id="main-tabs">
+                    <button class="tab-button active" data-tab="stat">STAT</button>
+                    <button class="tab-button" data-tab="inv">INV</button>
+                    <button class="tab-button" data-tab="data">DATA</button>
+                    <button class="tab-button" data-tab="map">MAP</button>
+                    <button class="tab-button" data-tab="radio">RADIO</button>
+                </nav>
+                <div class="tab-underline"></div>
+            </header>
+            
+            <!-- Sub-tabs -->
+            <div class="sub-tabs-container">
+                <nav class="sub-tabs" id="sub-tabs-stat" data-parent="stat">
+                    <button class="sub-tab-button active">STATUS</button>
+                    <button class="sub-tab-button">SPECIAL</button>
+                    <button class="sub-tab-button">PERKS</button>
+                </nav>
+                <nav class="sub-tabs hidden" id="sub-tabs-inv" data-parent="inv">
+                    <button class="sub-tab-button active">WEAPONS</button>
+                    <button class="sub-tab-button">APPAREL</button>
+                    <button class="sub-tab-button">AID</button>
+                    <button class="sub-tab-button">MISC</button>
+                    <button class="sub-tab-button">JUNK</button>
+                </nav>
+                <nav class="sub-tabs hidden" id="sub-tabs-data" data-parent="data">
+                    <button class="sub-tab-button active">QUESTS</button>
+                    <button class="sub-tab-button">WORKSHOPS</button>
+                    <button class="sub-tab-button">STATS</button>
+                </nav>
+                <nav class="sub-tabs hidden" id="sub-tabs-map" data-parent="map">
+                    <button class="sub-tab-button active">LOCAL MAP</button>
+                    <button class="sub-tab-button">WORLD MAP</button>
+                </nav>
+                <nav class="sub-tabs hidden" id="sub-tabs-radio" data-parent="radio">
+                    <button class="sub-tab-button active">DIAMOND CITY</button>
+                    <button class="sub-tab-button">CLASSICAL</button>
+                    <button class="sub-tab-button">FREEDOM</button>
+                </nav>
+            </div>
+            
+            <!-- Content Area -->
+            <main class="pipboy-content" id="pipboy-content">
+                <div class="content-panel active" data-tab="stat" data-subtab="0">
+                    <div class="demo-content">
+                        <h2>STATUS</h2>
+                        <div class="grid-pattern">
+                            <p>Framework Ready</p>
+                            <p>System: Online</p>
+                            <p>Interface: Operational</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Footer -->
+            <footer class="pipboy-footer">
+                <div class="footer-info">
+                    <span class="hp-indicator">HP <span class="value">100/100</span></span>
+                    <span class="level-indicator">LEVEL <span class="value">1</span></span>
+                    <span class="ap-indicator">AP <span class="value">100/100</span></span>
+                </div>
+            </footer>
+        </div>
+    </div>
+    
+    <script src="effects.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
