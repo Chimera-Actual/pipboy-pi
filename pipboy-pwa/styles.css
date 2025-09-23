@@ -226,16 +226,55 @@ body {
 .sub-tabs-container {
     min-height: 30px;
     margin-bottom: 10px;
-    padding: 0 40px;
+    padding: 0 10px; /* Reduced padding to give more room */
     overflow: visible;
+    width: 100%;
 }
 
 .sub-tabs {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    flex-wrap: nowrap; /* Force single line - no wrapping */
+    gap: 8px; /* Reduced gap */
     opacity: 0.7;
     align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    overflow-x: visible !important; /* Ensure no clipping */
+    overflow-y: visible !important;
+}
+
+/* Special handling for DATA tab with 4 items - CRITICAL FIX */
+.sub-tabs[data-parent="data"] {
+    gap: 2px !important; /* Minimal gap for DATA tab */
+    display: grid !important; /* Use grid for better control */
+    grid-template-columns: repeat(4, 1fr); /* Force 4 equal columns */
+    width: 100%;
+}
+
+.sub-tabs[data-parent="data"] .sub-tab-button {
+    font-size: 8px !important; /* Even smaller font for DATA tab buttons */
+    padding: 2px 2px !important; /* Minimal padding */
+    letter-spacing: -0.5px !important; /* Negative letter spacing to compress */
+    min-width: auto !important;
+    width: 100%; /* Fill grid cell */
+    text-align: center;
+}
+
+/* Special handling for INV tab with 5 items */
+.sub-tabs[data-parent="inv"] {
+    gap: 2px !important; /* Smaller gap for INV tab */
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr); /* Force 5 equal columns */
+    width: 100%;
+}
+
+.sub-tabs[data-parent="inv"] .sub-tab-button {
+    font-size: 8px !important; /* Smaller font for INV tab buttons */
+    padding: 2px 2px !important; /* Minimal padding */
+    letter-spacing: -0.5px !important; /* Negative letter spacing */
+    min-width: auto !important;
+    width: 100%;
+    text-align: center;
 }
 
 .sub-tabs.hidden {
@@ -247,12 +286,15 @@ body {
     border: none;
     color: rgba(var(--pip-color-rgb), 0.5);
     font-family: 'Courier New', monospace;
-    font-size: 12px;
-    padding: 4px 8px;
+    font-size: 10px; /* Reduced from 11px */
+    padding: 3px 5px; /* Reduced padding */
     cursor: pointer;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.3px; /* Reduced letter spacing */
     transition: all 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+    min-width: min-content; /* Ensure minimum width for content */
 }
 
 .sub-tab-button:hover {
@@ -674,4 +716,22 @@ body {
 
 .sub-tab-button:not(.active) {
     color: rgba(var(--pip-color-rgb), 0.5);
+}
+
+/* Media queries for smaller viewports */
+@media screen and (max-width: 768px) {
+    .sub-tabs[data-parent="data"] .sub-tab-button,
+    .sub-tabs[data-parent="inv"] .sub-tab-button {
+        font-size: 7px !important;
+        padding: 1px 1px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sub-tabs[data-parent="data"] .sub-tab-button,
+    .sub-tabs[data-parent="inv"] .sub-tab-button {
+        font-size: 6px !important;
+        padding: 1px 1px !important;
+        letter-spacing: -1px !important;
+    }
 }

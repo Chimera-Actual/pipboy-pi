@@ -77,6 +77,23 @@ class PipBoyFramework {
         const targetSubTab = document.querySelector(`#sub-tabs-${tabName}`);
         if (targetSubTab) {
             targetSubTab.classList.remove('hidden');
+            
+            // CRITICAL FIX: Force grid layout for DATA and INV tabs
+            if (tabName === 'data' || tabName === 'inv') {
+                targetSubTab.style.display = 'grid';
+                if (tabName === 'data') {
+                    targetSubTab.style.gridTemplateColumns = 'repeat(4, 1fr)';
+                } else if (tabName === 'inv') {
+                    targetSubTab.style.gridTemplateColumns = 'repeat(5, 1fr)';
+                }
+                
+                // Verify all buttons are visible
+                const buttons = targetSubTab.querySelectorAll('.sub-tab-button');
+                console.log(`${tabName.toUpperCase()} tab has ${buttons.length} sub-tabs:`);
+                buttons.forEach((btn, idx) => {
+                    console.log(`  ${idx + 1}. ${btn.textContent}`);
+                });
+            }
         }
         
         // Update content
@@ -164,6 +181,7 @@ class PipBoyFramework {
             'QUESTS': '<p>Main Quest: Find the Institute</p><p>Side Quest: Help the Settlers</p>',
             'WORKSHOPS': '<p>Sanctuary Hills - Population: 15</p><p>Red Rocket - Population: 3</p>',
             'STATS': '<p>Locations Discovered: 127</p><p>Enemies Killed: 892</p><p>Caps Collected: 15,420</p>',
+            'SETTINGS': '<p>Display Settings: Active</p><p>Audio Settings: Enabled</p><p>Theme: Green</p><p>Effects: All On</p>',
             'LOCAL MAP': '<p>[Map Grid Display]</p><p>Current Location: Commonwealth</p>',
             'WORLD MAP': '<p>[World Overview]</p><p>Fast Travel Points: 45</p>',
             'DIAMOND CITY': '<p>♪ Playing: Diamond City Radio</p><p>Travis Miles - "The Nervous DJ"</p>',

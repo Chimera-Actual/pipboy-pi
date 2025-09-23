@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATA Tab Test</title>
+    <style>
+        body {
+            background: #111;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+        }
+        #test-results {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #0f0;
+            background: rgba(0, 255, 0, 0.1);
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+        .info { color: #ff0; }
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: 2px solid #0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>DATA Tab Visibility Test</h1>
+    
+    <iframe id="pipboy-frame" src="http://localhost:5000"></iframe>
+    
+    <div id="test-results">
+        <h2>Test Results:</h2>
+        <div id="output"></div>
+    </div>
+    
+    <script>
+        window.addEventListener('load', () => {
+            const iframe = document.getElementById('pipboy-frame');
+            const output = document.getElementById('output');
+            
+            function log(msg, type = 'info') {
+                const line = document.createElement('div');
+                line.className = type;
+                line.textContent = msg;
+                output.appendChild(line);
+                console.log(msg);
+            }
+            
+            // Wait for iframe to load
+            iframe.onload = () => {
+                setTimeout(() => {
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        
+                        log('Testing DATA tab sub-tabs visibility...', 'info');
+                        
+                        // Click on DATA tab
+                        const dataTab = iframeDoc.querySelector('button[data-tab="data"]');
+                        if (dataTab) {
+                            dataTab.click();
+                            log('✓ DATA tab clicked', 'success');
+                            
+                            setTimeout(() => {
+                                // Check all sub-tab buttons
+                                const dataSubTabs = iframeDoc.querySelectorAll('#sub-tabs-data .sub-tab-button');
+                                
+                                log(`Found ${dataSubTabs.length} sub-tab buttons:`, 'info');
+                                
+                                const expectedTabs = ['QUESTS', 'WORKSHOPS', 'STATS', 'SETTINGS'];
+                                let allVisible = true;
+                                
+                                dataSubTabs.forEach((tab, index) => {
+                                    const rect = tab.getBoundingClientRect();
+                                    const isVisible = rect.width > 0 && rect.height > 0 && 
+                                                     rect.top >= 0 && rect.left >= 0 &&
+                                                     rect.bottom <= (iframe.contentWindow.innerHeight || iframeDoc.documentElement.clientHeight) &&
+                                                     rect.right <= (iframe.contentWindow.innerWidth || iframeDoc.documentElement.clientWidth);
+                                    
+                                    const status = isVisible ? '✓' : '✗';
+                                    const statusClass = isVisible ? 'success' : 'error';
+                                    
+                                    log(`  ${status} ${tab.textContent} - Position: (${Math.round(rect.left)}, ${Math.round(rect.top)}) Size: ${Math.round(rect.width)}x${Math.round(rect.height)}`, statusClass);
+                                    
+                                    if (!isVisible) allVisible = false;
+                                });
+                                
+                                // Check specifically for SETTINGS button
+                                const settingsButton = Array.from(dataSubTabs).find(tab => tab.textContent.includes('SETTINGS'));
+                                if (settingsButton) {
+                                    const rect = settingsButton.getBoundingClientRect();
+                                    log('', 'info');
+                                    log('SETTINGS button details:', 'info');
+                                    log(`  Text: "${settingsButton.textContent}"`, 'info');
+                                    log(`  Display: ${window.getComputedStyle(settingsButton).display}`, 'info');
+                                    log(`  Visibility: ${window.getComputedStyle(settingsButton).visibility}`, 'info');
+                                    log(`  Opacity: ${window.getComputedStyle(settingsButton).opacity}`, 'info');
+                                    
+                                    // Try clicking it
+                                    try {
+                                        settingsButton.click();
+                                        log('  ✓ SETTINGS button is clickable!', 'success');
+                                    } catch (e) {
+                                        log('  ✗ Could not click SETTINGS button', 'error');
+                                    }
+                                } else {
+                                    log('✗ SETTINGS button not found!', 'error');
+                                }
+                                
+                                // Final verdict
+                                log('', 'info');
+                                if (allVisible && dataSubTabs.length === 4) {
+                                    log('✓✓✓ SUCCESS: All 4 DATA sub-tabs are visible! ✓✓✓', 'success');
+                                } else {
+                                    log('✗✗✗ FAILURE: Not all DATA sub-tabs are visible ✗✗✗', 'error');
+                                }
+                                
+                            }, 500);
+                        } else {
+                            log('✗ DATA tab button not found', 'error');
+                        }
+                    } catch (e) {
+                        log(`Error during test: ${e.message}`, 'error');
+                    }
+                }, 1000);
+            };
+        });
+    </script>
+</body>
+</html>
