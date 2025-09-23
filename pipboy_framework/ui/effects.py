@@ -70,7 +70,7 @@ class CRTEffect:
     
     def apply_scanlines(self, surface: pygame.Surface):
         """Apply scanline effect to surface"""
-        surface.blit(self.scanlines, (0, 0), special_flags=pygame.BLEND_ALPHA)
+        surface.blit(self.scanlines, (0, 0), special_flags=pygame.BLEND_PREMULTIPLIED)
     
     def render(self, surface: pygame.Surface, enable_noise: bool = True):
         """

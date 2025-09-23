@@ -16,15 +16,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Pip-Boy App"
+args = "Pip-Boy Framework"
 
 [[workflows.workflow]]
-name = "Pip-Boy App"
+name = "Pip-Boy Framework"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python modules/main.py"
+args = "python run_framework_demo.py"
 
 [workflows.workflow.metadata]
 outputType = "console"

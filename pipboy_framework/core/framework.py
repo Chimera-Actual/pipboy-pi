@@ -60,7 +60,13 @@ class PipBoyFramework:
         """
         # Initialize pygame
         pygame.init()
-        pygame.mixer.init()
+        
+        # Initialize audio with graceful fallback
+        try:
+            pygame.mixer.init()
+        except pygame.error:
+            print("Audio initialization failed - continuing without audio support")
+            pass
         
         # Create display
         flags = pygame.FULLSCREEN if fullscreen else 0
@@ -184,7 +190,7 @@ class PipBoyFramework:
         
         print(f"Pip-Boy Framework starting...")
         print(f"Registered tabs: {', '.join(self.registry.get_tab_names())}")
-        print(f"Color scheme: {self.theme.background}")
+        print(f"Active color scheme with background: {self.theme.background}")
         print("Controls: Arrow keys for navigation, Enter/Space to select, Esc to exit")
         
         try:

@@ -178,8 +178,15 @@ class PipBoyTheme:
             try:
                 self._font_cache[key] = pygame.font.Font(path, size)
             except (pygame.error, FileNotFoundError):
-                # Fallback to system font if custom font fails
-                self._font_cache[key] = pygame.font.Font(None, size)
+                # Try alternative paths for fonts
+                try:
+                    # Try fonts directory at project root
+                    alt_path = path.replace("pipboy_framework/assets/fonts", "fonts")
+                    self._font_cache[key] = pygame.font.Font(alt_path, size)
+                except (pygame.error, FileNotFoundError):
+                    # Fallback to system font if custom font fails
+                    print(f"Font not found at {path} or {alt_path}, using system font")
+                    self._font_cache[key] = pygame.font.Font(None, size)
         return self._font_cache[key]
     
     def get_main_font(self, size: int = 14) -> pygame.font.Font:

@@ -6,6 +6,7 @@ Shows basic functionality including lists, data display, and interaction.
 """
 
 import pygame
+import math
 from typing import List
 from pipboy_framework.core.tab_system import BaseTab
 from pipboy_framework.ui.components import create_list, create_grid
@@ -193,7 +194,7 @@ class DemoTab(BaseTab):
         
         # Add a simple animated element
         time = pygame.time.get_ticks()
-        pulse_alpha = int(128 + 127 * (0.5 + 0.5 * pygame.math.cos(time * 0.003)))
+        pulse_alpha = int(128 + 127 * (0.5 + 0.5 * math.cos(time * 0.003)))
         
         # Create a pulsing rectangle
         pulse_surface = pygame.Surface((200, 50), pygame.SRCALPHA)
