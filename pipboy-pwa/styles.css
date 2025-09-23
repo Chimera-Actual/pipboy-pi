@@ -243,35 +243,59 @@ body {
     overflow-y: visible !important;
 }
 
-/* Special handling for DATA tab with 4 items - CRITICAL FIX */
-.sub-tabs[data-parent="data"] {
-    gap: 2px !important; /* Minimal gap for DATA tab */
-    display: grid !important; /* Use grid for better control */
-    grid-template-columns: repeat(4, 1fr); /* Force 4 equal columns */
+/* Grid layout for all tabs to ensure visibility - COMPREHENSIVE FIX */
+.sub-tabs[data-parent="stat"] {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px !important;
     width: 100%;
 }
 
-.sub-tabs[data-parent="data"] .sub-tab-button {
-    font-size: 8px !important; /* Even smaller font for DATA tab buttons */
-    padding: 2px 2px !important; /* Minimal padding */
-    letter-spacing: -0.5px !important; /* Negative letter spacing to compress */
+.sub-tabs[data-parent="data"] {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns for DATA */
+    gap: 2px !important;
+    width: 100%;
+}
+
+.sub-tabs[data-parent="inv"] {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr); /* 5 equal columns for INV */
+    gap: 2px !important;
+    width: 100%;
+}
+
+.sub-tabs[data-parent="map"] {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns for MAP */
+    gap: 5px !important;
+    width: 100%;
+}
+
+.sub-tabs[data-parent="radio"] {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns for RADIO */
+    gap: 8px !important;
+    width: 100%;
+}
+
+/* Consistent button styling for all grid layouts */
+.sub-tabs[data-parent="data"] .sub-tab-button,
+.sub-tabs[data-parent="inv"] .sub-tab-button {
+    font-size: 8px !important;
+    padding: 2px 1px !important;
+    letter-spacing: -0.5px !important;
     min-width: auto !important;
-    width: 100%; /* Fill grid cell */
+    width: 100%;
     text-align: center;
 }
 
-/* Special handling for INV tab with 5 items */
-.sub-tabs[data-parent="inv"] {
-    gap: 2px !important; /* Smaller gap for INV tab */
-    display: grid !important;
-    grid-template-columns: repeat(5, 1fr); /* Force 5 equal columns */
-    width: 100%;
-}
-
-.sub-tabs[data-parent="inv"] .sub-tab-button {
-    font-size: 8px !important; /* Smaller font for INV tab buttons */
-    padding: 2px 2px !important; /* Minimal padding */
-    letter-spacing: -0.5px !important; /* Negative letter spacing */
+.sub-tabs[data-parent="map"] .sub-tab-button,
+.sub-tabs[data-parent="stat"] .sub-tab-button,
+.sub-tabs[data-parent="radio"] .sub-tab-button {
+    font-size: 9px !important;
+    padding: 3px 2px !important;
+    letter-spacing: 0px !important;
     min-width: auto !important;
     width: 100%;
     text-align: center;
