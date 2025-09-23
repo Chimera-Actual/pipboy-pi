@@ -1,62 +1,66 @@
-# PipBoy Pygame Project
+# Pip-Boy Progressive Web App (PWA)
 
 ## Overview
-A Python-based Pip-Boy interface application inspired by the Fallout series, built with Pygame-ce. This interactive application simulates various aspects of the Pip-Boy interface including inventory management, character stats, world map, and radio functionality.
+A browser-based Progressive Web App implementation of the Pip-Boy interface from the Fallout series. This PWA provides an authentic retro interface with tab navigation, visual effects, and offline capability - all running in modern web browsers.
 
-## Recent Changes (September 22, 2025)
-- ✅ **Environment Setup**: Configured for Replit environment with proper Python dependencies
-- ✅ **Path Configuration**: Fixed all asset paths to work from project root
-- ✅ **Audio Handling**: Added graceful fallback for headless/server environments
-- ✅ **Display Settings**: Updated for non-fullscreen operation with larger resolution (1024x768)
-- ✅ **Dependencies**: Installed pygame-ce, numpy, Pillow, requests, tinytag, keyboard
-- ✅ **Missing Files**: Created required configuration files (settings_secrets.py, user_config.py)
+## Recent Changes (September 23, 2025)
+- ✅ **PWA Conversion**: Successfully converted from Pygame desktop app to Progressive Web App
+- ✅ **Web Server**: Running on port 5000 with proper MIME types and headers
+- ✅ **Service Worker**: Implemented for offline functionality with cache-first strategy
+- ✅ **PWA Manifest**: Configured for installability as standalone app
+- ✅ **Tab System**: Ported tab/sub-tab navigation to JavaScript
+- ✅ **Visual Effects**: Recreated CRT effects, scanlines, and glitches in CSS/JS
+- ✅ **Framework API**: Clean, content-agnostic interface exposed via window.PipBoyAPI
 
 ## Project Architecture
 
 ### Core Structure
-- **modules/main.py**: Main application entry point with SDL environment setup
-- **modules/pipboy.py**: Core PipBoy class managing the interface
-- **modules/settings.py**: Configuration management and game data
-- **modules/tab_manager.py**: Tab system coordination (STAT, INV, DATA, MAP, RADIO)
+- **pipboy-pwa/index.html**: Main HTML structure with semantic layout
+- **pipboy-pwa/styles.css**: Complete Pip-Boy styling with animations and effects
+- **pipboy-pwa/app.js**: Tab navigation system and framework API
+- **pipboy-pwa/effects.js**: Visual effects (CRT, glitch, scanlines, boot sequence)
+- **pipboy-pwa/service-worker.js**: Offline caching and PWA functionality
+- **pipboy-pwa/manifest.json**: PWA manifest for installation
+- **pipboy-pwa/server.py**: Python web server serving on port 5000
 
-### Key Modules
-- **tabs/**: Individual tab implementations (inventory, stats, data, map, radio)
-- **data_models.py**: Data structures for items, characters, and UI elements
-- **items.py**: Item loading and inventory management system
-- **input_manager.py**: Keyboard/controller input handling
-
-### Assets
-- **fonts/**: Roboto and TechMono font families
-- **images/**: UI overlays, character sprites, item icons, world map
-- **sounds/**: Audio effects and ambient sounds (gracefully handled when unavailable)
+### Key Features
+- **Tab System**: 5 main tabs (STAT, INV, DATA, MAP, RADIO) with sub-tabs
+- **Navigation**: Keyboard (arrow keys) and mouse/touch support
+- **Visual Effects**: CRT monitor simulation, scanlines, phosphor glow, glitches
+- **PWA Capabilities**: Offline functionality, installable as standalone app
+- **Framework API**: window.PipBoyAPI for dynamic content registration
 
 ## User Preferences
-- **Display**: Windowed mode preferred for Replit environment
-- **Resolution**: 1024x768 for better visibility in web preview
-- **Audio**: Optional (gracefully handles absence in headless environments)
-- **Configuration**: Uses configure.py for user-friendly setup
+- **Technology**: Progressive Web App for browser deployment
+- **Port**: 5000 for web server
+- **Styling**: Authentic green (#00ff00) on black retro terminal aesthetic
+- **Effects**: CRT monitor effects, scanlines, glitches for authenticity
+- **Framework**: Content-agnostic design for flexibility
 
 ## Technical Notes
 
-### Replit-Specific Adaptations
-- Audio initialization with fallback for headless environment
-- Path corrections from relative to project root
-- SDL video driver configuration for server environments
-- Graceful handling of missing audio devices
+### PWA Implementation
+- Service Worker with cache-first strategy for offline functionality
+- Relative paths for proper scope and installation
+- Manifest configured for standalone app installation
+- Responsive design that fills the viewport
 
-### Known Limitations
-- Map functionality requires API keys for full operation
-- Audio features limited in headless environments
-- Some threading for background tasks (map loading, audio) may show errors but don't affect core functionality
+### Browser Compatibility
+- Works in all modern browsers (Chrome, Firefox, Safari, Edge)
+- Progressive enhancement for older browsers
+- Touch and keyboard navigation support
+- Mobile and desktop compatible
 
 ## Running the Application
-The application runs via the configured workflow:
+The PWA runs via the configured workflow:
 ```bash
-python modules/main.py
+cd pipboy-pwa && python3 server.py
 ```
+Access at: http://localhost:5000
 
 ## Development Notes
-- Use `configure.py` to customize player settings, colors, and system preferences
-- Items are loaded from `modules/items.ini` configuration file
-- Settings can be overridden via `user_config.py`
-- Core game loop runs at 24 FPS with threading for UI responsiveness
+- Use window.PipBoyAPI to register custom tabs and content
+- Visual effects can be toggled via effects.js settings
+- Service Worker caches all assets for offline use
+- Install as PWA via browser's "Install App" option
+- Framework is content-agnostic - ready for any data integration
